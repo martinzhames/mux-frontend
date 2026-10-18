@@ -58,6 +58,33 @@ describe("evaluateSendFlowGate", () => {
 		expect(result.allowed).toBe(false);
 		expect(result.code).toBe(SEND_GATE_CODES.SEND_NETWORK_MISMATCH);
 	});
+
+	it("blocks on network mismatch when requestedNetwork is null", () => {
+		const result = evaluateSendFlowGate({
+			...baseInput,
+			requestedNetwork: null,
+		});
+		expect(result.allowed).toBe(false);
+		expect(result.code).toBe(SEND_GATE_CODES.SEND_NETWORK_MISMATCH);
+	});
+
+	it("blocks on network mismatch when requestedNetwork is a blank string", () => {
+		const result = evaluateSendFlowGate({
+			...baseInput,
+			requestedNetwork: "",
+		});
+		expect(result.allowed).toBe(false);
+		expect(result.code).toBe(SEND_GATE_CODES.SEND_NETWORK_MISMATCH);
+	});
+
+	it("allows when requestedNetwork is undefined (no network requested)", () => {
+		const result = evaluateSendFlowGate({
+			...baseInput,
+			requestedNetwork: undefined,
+		});
+		expect(result.allowed).toBe(true);
+		expect(result.code).toBe(SEND_GATE_CODES.SEND_OK);
+	});
 });
 
 describe("SEND_GATE_CODES contract", () => {
@@ -79,6 +106,9 @@ describe("SEND_GATE_CODES contract", () => {
 			{ ...baseInput, network: null },
 			{ ...baseInput, network: "mainnet", mainnetOptIn: false },
 			{ ...baseInput, requestedNetwork: "mainnet" },
+			{ ...baseInput, requestedNetwork: null },
+			{ ...baseInput, requestedNetwork: "" },
+			{ ...baseInput, requestedNetwork: undefined },
 			baseInput,
 		];
 
