@@ -24,7 +24,7 @@ const TEAM_ERROR = {
 type TeamErrorCode = (typeof TEAM_ERROR)[keyof typeof TEAM_ERROR];
 
 // In-memory mock store for local dev / CI (never used in production).
-const mockTeam: TeamMember[] = [
+export const mockTeam: TeamMember[] = [
   {
     id: 'member-1',
     name: 'Alice Admin',
